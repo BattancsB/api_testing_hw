@@ -22,4 +22,11 @@ describe('Food tests', () => {
 
         expect(postResponse.code).toBe(400)
     })
+
+    it('should return an error when the nutritional value is negative', async () => {
+         
+        const postResponse = await client.post('/api/drink', {'name': 'cake', 'calories': -50})
+
+        expect(postResponse.code).toBe(400)
+    })
 })
