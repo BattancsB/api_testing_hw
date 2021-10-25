@@ -165,10 +165,11 @@ describe('Food tests', () => {
         const cakeResponse = await client.post('/api/food', cake);
         let cakeId = JSON.parse(cakeResponse.body).id;
 
-        const putResponse = await client.put('/api/food/' + "1", cake);
-        expect(putResponse.code).toBe(404);
+        cake.id = "1";
 
-        cake.id = cakeId;
+        const putResponse = await client.put('/api/food/' + cakeId, cake);
+        expect(putResponse.code).toBe(400);
+
 
         client.delete('/api/food/' + cakeId);
 
