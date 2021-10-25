@@ -48,7 +48,12 @@ describe('Food tests', () => {
         notCake.id = notCakeId;
 
         expect(getResponseBody).toContainEqual(cake);
-        expect(getResponseBody).toContainEqual(cake);
+        expect(getResponseBody).toContainEqual(notCake);
+
+        client.delete('/api/food/' + cakeId);
+        client.delete('/api/food/' + notCakeId);
         
     })
+
+    
 })
