@@ -14,6 +14,7 @@ describe('Food tests', () => {
         const postResponse = await client.post('/api/food', {'calories': 100})
 
         expect(postResponse.code).toBe(400)
+
     })
 
     it('should return an error when the foods nutritional value is missing', async () => {
@@ -21,6 +22,7 @@ describe('Food tests', () => {
         const postResponse = await client.post('/api/food', {'name': 'cake'})
 
         expect(postResponse.code).toBe(400)
+
     })
 
     it('should return an error when the nutritional value is negative', async () => {
@@ -28,6 +30,7 @@ describe('Food tests', () => {
         const postResponse = await client.post('/api/food', {'name': 'cake', 'calories': -50})
 
         expect(postResponse.code).toBe(400)
+
     })
 
     it('should be able to get back elements with a get request', async () => {
@@ -79,9 +82,12 @@ describe('Food tests', () => {
 
         const cakeResponse = await client.post('/api/food', cake);
         let cakeId = 1;
+        const originalcakeID = JSON.parse(cakeResponse.body).id;
 
         const getResponse = await client.get('/api/food/' + cakeId);
         expect(getResponse.code).toBe(404);
+
+        client.delete('/api/food/' + originalcakeID);
 
     })
 
@@ -113,11 +119,31 @@ describe('Food tests', () => {
 
         const cakeResponse = await client.post('/api/food', cake);
         let cakeId = 1;
+        const originalcakeID = JSON.parse(cakeResponse.body).id;
 
         cake.name = "theCakeIsALie";
         const putResponse = await client.put('/api/food/' + cakeId, cake);
         expect(putResponse.code).toBe(404);
 
+        client.delete('/api/food/' + originalcakeID);
+    })
 
+    it('should be able to modify existing food', async () => {
+        let cake = {'name': 'cake', 'calories': 150};
+
+        const cakeResponse = await client.post('/api/food', cake);
+        let cakeId = JSON.parse(cakeResponse.body).id;
+
+        const deleteResponse = await client.delete('/api/food/' + cakeId);
+        expect(deleteResponse.code).toBe(204);
+
+        const getResponse = await client.get('/api/food');
+        expect(getResponse.code).toBe(200);
+
+        const getResponseBody = JSON.parse(getResponse.body);
+
+        cake.id = cakeId;
+
+        expect(getResponseBody).toEqual(expect.not.arrayContaining([cake]));
     })
 })
