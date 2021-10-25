@@ -30,5 +30,25 @@ describe('Food tests', () => {
         expect(postResponse.code).toBe(400)
     })
 
-    
+    it('should be able to get back elements with a get request', async () => {
+        let cake = {'name': 'cake', 'calories': 150};
+        let notCake = {'name': 'notCake', 'calories': 75};
+
+        const cakeResponse = await client.post('/api/food', cake);
+        let cakeId = JSON.parse(cakeResponse.body).id;
+        const notCakeResponse = await client.post('/api/food', notCake);
+        let notCakeId = JSON.parse(notCakeResponse.body).id;
+
+        const getResponse = await client.get('/api/food');
+        expect(getResponse.code).toBe(200);
+
+        const getResponseBody = JSON.parse(getResponse.body);
+
+        cake.id = cakeId;
+        notCake.id = notCakeId;
+
+        expect(getResponseBody).toContainEqual(cake);
+        expect(getResponseBody).toContainEqual(cake);
+        
+    })
 })
