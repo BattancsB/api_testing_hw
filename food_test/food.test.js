@@ -84,4 +84,27 @@ describe('Food tests', () => {
         expect(getResponse.code).toBe(404);
 
     })
+
+    it('should be able to modify existing food', async () => {
+        let cake = {'name': 'cake', 'calories': 150};
+
+        const cakeResponse = await client.post('/api/food', cake);
+        let cakeId = JSON.parse(cakeResponse.body).id;
+
+        cake.name = "theCakeIsALie";
+        const putResponse = await client.put('/api/food/' + cakeId, cake);
+        expect(putResponse.code).toBe(200);
+
+        const getResponse = await client.get('/api/food/' + cakeId);
+        expect(getResponse.code).toBe(200);
+
+        const getResponseBody = JSON.parse(getResponse.body);
+
+        cake.id = cakeId;
+
+        expect(getResponseBody).toStrictEqual(cake);
+
+        client.delete('/api/food/' + cakeId);
+
+    })
 })
