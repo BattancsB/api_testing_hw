@@ -158,4 +158,19 @@ describe('Food tests', () => {
 
         client.delete('/api/food/' + cakeId);
     })
+
+    it('should be get and error when the id in the url and body are different', async () => {
+        let cake = {'name': 'cake', 'calories': 150};
+
+        const cakeResponse = await client.post('/api/food', cake);
+        let cakeId = JSON.parse(cakeResponse.body).id;
+
+        const putResponse = await client.put('/api/food/' + "1", cake);
+        expect(putResponse.code).toBe(404);
+
+        cake.id = cakeId;
+
+        client.delete('/api/food/' + cakeId);
+
+    })
 })
