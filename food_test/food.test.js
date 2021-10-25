@@ -128,7 +128,7 @@ describe('Food tests', () => {
         client.delete('/api/food/' + originalcakeID);
     })
 
-    it('should be able to modify existing food', async () => {
+    it('should succesfully delete element', async () => {
         let cake = {'name': 'cake', 'calories': 150};
 
         const cakeResponse = await client.post('/api/food', cake);
