@@ -18,15 +18,17 @@ describe('Food tests', () => {
 
     it('should return an error when the foods nutritional value is missing', async () => {
         
-        const postResponse = await client.post('/api/drink', {'name': 'cake'})
+        const postResponse = await client.post('/api/food', {'name': 'cake'})
 
         expect(postResponse.code).toBe(400)
     })
 
     it('should return an error when the nutritional value is negative', async () => {
          
-        const postResponse = await client.post('/api/drink', {'name': 'cake', 'calories': -50})
+        const postResponse = await client.post('/api/food', {'name': 'cake', 'calories': -50})
 
         expect(postResponse.code).toBe(400)
     })
+
+    
 })
