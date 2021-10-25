@@ -73,4 +73,15 @@ describe('Food tests', () => {
         client.delete('/api/food/' + cakeId);
 
     })
+
+    it('should get an error when sending unused id', async () => {
+        let cake = {'name': 'cake', 'calories': 150};
+
+        const cakeResponse = await client.post('/api/food', cake);
+        let cakeId = 1;
+
+        const getResponse = await client.get('/api/food/' + cakeId);
+        expect(getResponse.code).toBe(404);
+
+    })
 })
