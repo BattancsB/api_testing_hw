@@ -9,7 +9,17 @@ const client = require('./client')('localhost', 8000)
  */
 
 describe('Food tests', () => {
-    it('test runner works', () => {
-        expect(1).toBe(1)
+    it('should return an error when a the foods name is missing', async () => {
+ 
+        const postResponse = await client.post('/api/food', {'calories': 100})
+
+        expect(postResponse.code).toBe(400)
+    })
+
+    it('should return an error when the foods nutritional value is missing', async () => {
+        
+        const postResponse = await client.post('/api/drink', {'name': 'cake'})
+
+        expect(postResponse.code).toBe(400)
     })
 })
