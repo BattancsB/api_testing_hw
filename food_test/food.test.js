@@ -107,4 +107,17 @@ describe('Food tests', () => {
         client.delete('/api/food/' + cakeId);
 
     })
+
+    it('should get an error when using bad id to update food', async () => {
+        let cake = {'name': 'cake', 'calories': 150};
+
+        const cakeResponse = await client.post('/api/food', cake);
+        let cakeId = 1;
+
+        cake.name = "theCakeIsALie";
+        const putResponse = await client.put('/api/food/' + cakeId, cake);
+        expect(putResponse.code).toBe(404);
+
+
+    })
 })
