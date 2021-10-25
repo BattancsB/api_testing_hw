@@ -146,4 +146,16 @@ describe('Food tests', () => {
 
         expect(getResponseBody).toEqual(expect.not.arrayContaining([cake]));
     })
+
+    it('should get an error when using a bad id in a delete req', async () => {
+        let cake = {'name': 'cake', 'calories': 150};
+
+        const cakeResponse = await client.post('/api/food', cake);
+        let cakeId = JSON.parse(cakeResponse.body).id;
+
+        const deleteResponse = await client.delete('/api/food/' + "1");
+        expect(deleteResponse.code).toBe(404);
+
+        client.delete('/api/food/' + cakeId);
+    })
 })
